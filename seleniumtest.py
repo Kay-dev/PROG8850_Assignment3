@@ -1,10 +1,15 @@
 from selenium import webdriver
 import mysql.connector
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome.options import Options
 
 
 #driver = webdriver.Safari()  # Ensure Safaridriver/Chrome Driver installed
-driver = webdriver.Chrome()
+chrome_options = Options()
+chrome_options.add_argument("--headless") 
+chrome_options.add_argument("--no-sandbox")  
+chrome_options.add_argument("--disable-dev-shm-usage") 
+driver = webdriver.Chrome(options=chrome_options)
 driver.get('http://127.0.0.1:5000/login')
 
 # Interact with the login form
@@ -17,7 +22,7 @@ driver.find_element(By.CSS_SELECTOR, "input[type='submit']").click()
 driver.quit()
 
 # Verify user data in the database
-db = mysql.connector.connect(user='root', password='example', host='localhost', database='firstdatabase')
+db = mysql.connector.connect(user='root', password='admin', host='localhost', database='firstdatabase')
 cursor = db.cursor()
 cursor.execute("SELECT * FROM users WHERE username = 'jkaur'")
 user_data = cursor.fetchone()
